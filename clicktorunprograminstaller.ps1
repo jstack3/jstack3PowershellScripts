@@ -1,1 +1,1 @@
-﻿Start-Process powershell.exe -Verb runas -ArgumentList "C:\Users\jstack3_admin\Desktop\EssentialPrograms.ps1"
+﻿Start-Process powershell.exe -Verb runas -ArgumentList "$env:USERPROFILE\Desktop\EssentialPrograms.ps1"
