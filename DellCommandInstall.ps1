@@ -25,4 +25,4 @@ while ($true) {
     if ($key.VirtualKeyCode -ne 0) {
         Restart-Computer -Force
     }
-}
+  }
