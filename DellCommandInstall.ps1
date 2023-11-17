@@ -1,4 +1,5 @@
-﻿### Blank Space ####
+
+ ### Blank Space ####
 
 Write-Host 'Downloading Dell Command Update Installer...'
 
