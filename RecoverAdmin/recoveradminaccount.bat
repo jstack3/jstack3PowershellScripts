@@ -20,6 +20,14 @@ if "%1"=="" (
 
 ) else (
     echo You selected Drive: %1
+    dir %1\ > null
+    if %errorlevel% neq 0(
+        echo Selected drive letter %1 is not valid!!. If the drive is bitlocked use this command to unlock it: "manage-bde -unlock -recoverypassword <Drive Letter>:" . Wi
+        ndows installer/Recovery might also lack support for Dell RAID drivers so you may need to set to AHCI/SATA mode.
+
+    )
+
+
     reg load HKLM\TEMPSYSHIVE "%1\Windows\System32\config\SYSTEM"
 
     if %errorlevel% equ 0 (
