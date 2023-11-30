@@ -1,4 +1,5 @@
-﻿Echo 'Setting UseWUServer Registry to 0...'
+﻿
+Echo 'Setting UseWUServer Registry to 0...'
 Set-Itemproperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Name 'UseWUServer' -value '0'
 
 Echo 'Restarting Windows Update Servive...'
