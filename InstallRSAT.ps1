@@ -15,4 +15,4 @@ Write-Host 'Restarting Windows Update Servive...'
 Restart-Service -Name 'wuauserv'
 
 Write-Host "Script Complete... Press any key to exit."
-$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
+Read-Host

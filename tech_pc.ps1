@@ -3,15 +3,7 @@ $PowershellPrompt = New-Object Security.Principal.WindowsPrincipal([Security.Pri
 
 if (!$PowershellPrompt.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     Write-Host -ForegroundColor Red "Please run this script as admin! Press any key to quit!"
-    $host.UI.RawUI.FlushInputBuffer()
-
-    while ($true) {
-        $key = $host.UI.RawUI.ReadKey("NoWrite-Host,IncludeKeyDown")
-
-        if ($key.VirtualKeyCode -ne 0) {
-        exit
-        }
-    }
+    Read-Host
 }
 
 

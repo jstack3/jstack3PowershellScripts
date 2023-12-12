@@ -22,6 +22,6 @@ Remove-Item C:\Users\Public\Dell-Command-Update-Windows-Universal-Application_JC
 Remove-Item C:\Users\Public\DellCommandInstall -Recurse
 
 Write-Host "Press any key to restart the computer."
-$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
+Read-Host
 
 Restart-Computer -Force
