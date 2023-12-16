@@ -10,7 +10,7 @@ if (!($PowershellPrompt.IsInRole([Security.Principal.WindowsBuiltInRole]::Admini
 
 
 while ($true){
-    $selection = Read-Host -Prompt "How would you like to install the Active Directory Powershell Module?`n[1]Install RSAT (Takes longer and may fail on some computers)`n[2]Import Active Directory Powershell Module (Faster, some functionalities may be limited)`n[C]Cancel`n"
+    $selection = Read-Host -Prompt "How would you like to install the Active Directory Powershell Module?`n[1]Install RSAT (Slower, may fail on some computers)`n[2]Import Active Directory Powershell Module (Faster, some functionalities may be limited)`n[C]Cancel`n"
     if ($selection -in 1, 2, "C"){
         break
     }
