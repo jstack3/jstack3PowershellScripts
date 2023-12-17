@@ -52,7 +52,7 @@ elseif ($selection -eq 2){
         Write-Host "Extracting/Importing Active Directory Module..."
         Expand-Archive -Path "$env:TEMP\ActiveDirectory.zip" -DestinationPath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\Modules\ActiveDirectory"
 
-        Write-Host "Removing Active Directory Module..."
+        Write-Host "Removing Active Directory Module Zip..."
         Remove-Item -Path "$env:TEMP\ActiveDirectory.zip"
     }
     catch {
