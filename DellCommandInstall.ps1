@@ -1,6 +1,15 @@
 
  ### Blank Space ####
 
+ $PowershellPrompt = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+
+if (!($PowershellPrompt.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator))) {
+    Write-Host -ForegroundColor Red "Please run this script as Admin! Press any key to quit!"
+    Read-Host
+    exit
+}
+
+
 Write-Host 'Downloading Dell Command Update Installer...'
 
 $headers = @{
