@@ -37,6 +37,8 @@ if ($selection -eq 1){
 
         Write-Host 'Restarting Windows Update Servive...'
         Restart-Service -Name 'wuauserv'
+
+        Get-Command Get-ADComputer -ErrorAction Stop > $null
     }
     catch {
         Write-Host -ForegroundColor Red "RSAT install failed. Please try again or use a different method. Press any key to exit..."
@@ -54,6 +56,8 @@ elseif ($selection -eq 2){
 
         Write-Host "Removing Active Directory Module Zip..."
         Remove-Item -Path "$env:TEMP\ActiveDirectory.zip"
+
+        Get-Command Get-ADComputer -ErrorAction Stop > $null
     }
     catch {
         Write-Host -ForegroundColor Red "Failed to download/install Active Directory Module. Please try again or use a different method. Press any key to exit..."
