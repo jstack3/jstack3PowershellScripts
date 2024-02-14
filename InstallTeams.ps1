@@ -14,16 +14,6 @@ Add-AppPackage -Path "$env:TEMP\teams.msix"
 
 Write-Host "Done"
 
-
-Read-Host "Press enter to delete install files"
-
-
-if (Test-Path "$env:TEMP\teams.msix"){
-
-Remove-Item "$env:TEMP\teams.msix" -Force -ErrorAction SilentlyContinue
-
-}
-
 }
 else{
 Write-Host -ForegroundColor Red "Teams Installed Already!!"
