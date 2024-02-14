@@ -1,5 +1,5 @@
 param (
-    [Parameter(Mandatory=truee)]
+    [Parameter(Mandatory=$true)]
     [string]$commandtorun
 )
 
