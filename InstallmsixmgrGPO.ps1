@@ -6,6 +6,8 @@ Expand-Archive -Path "$env:TEMP\msixmgrGPO.zip" -DestinationPath "$env:TEMP\msix
 
 Copy-Item  -Path "$env:TEMP\msixmgrGPO\admx\en-US\DesktopAppInstaller.adml" -Destination "C:\Windows\PolicyDefinitions\en-US\."
 
+Copy-Item  -Path "$env:TEMP\msixmgrGPO\admx\DesktopAppInstaller.admx" -Destination "C:\Windows\PolicyDefinitions\."
+
 if (Test-Path "$env:TEMP\msixmgrGPO.zip"){
 
 Remove-Item "$env:TEMP\msixmgrGPO.zip" -Force -ErrorAction SilentlyContinue
