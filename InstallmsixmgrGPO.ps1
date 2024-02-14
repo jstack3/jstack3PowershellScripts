@@ -5,3 +5,15 @@ Invoke-WebRequest -Uri "https://download.microsoft.com/download/d/3/5/d35c060c-d
 Expand-Archive -Path "$env:TEMP\msixmgrGPO.zip" -DestinationPath "$env:TEMP\msixmgrGPO" -Force
 
 Copy-Item  -Path "$env:TEMP\msixmgrGPO\admx\en-US\DesktopAppInstaller.adml" -Destination "C:\Windows\PolicyDefinitions\en-US\."
+
+if (Test-Path "$env:TEMP\msixmgrGPO.zip"){
+
+Remove-Item "$env:TEMP\msixmgrGPO.zip" -Force -ErrorAction SilentlyContinue
+
+}
+
+if (Test-Path "$env:TEMP\msixmgrGPO"){
+
+Remove-Item "$env:TEMP\msixmgrGPO" -Force -ErrorAction SilentlyContinue -Recurse
+
+}
