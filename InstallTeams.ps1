@@ -1,5 +1,8 @@
 $ProgressPreference = 'SilentlyContinue'
 
+$teams = Get-AppPackage | Where-Object Name -EQ "MSTeams"
+
+if ($null -eq $teams){
 
 Write-Host "Downloading Teams.."
 
@@ -19,4 +22,9 @@ if (Test-Path "$env:TEMP\teams.msix"){
 
 Remove-Item "$env:TEMP\teams.msix" -Force -ErrorAction SilentlyContinue
 
+}
+
+}
+else{
+Write-Host -ForegroundColor Red "Teams Installed Already!!"
 }
