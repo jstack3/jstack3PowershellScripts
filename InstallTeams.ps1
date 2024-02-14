@@ -12,6 +12,12 @@ Write-Host "Installing Teams..."
 
 Add-AppPackage -Path "$env:TEMP\teams.msix"
 
+if (Test-Path "$env:TEMP\teams.msix"){
+
+Remove-Item "$env:TEMP\teams.msix" -Force -ErrorAction SilentlyContinue
+
+}
+
 Write-Host "Done"
 
 }
