@@ -4,5 +4,3 @@ param (
 )
 
 Start-Process powershell -Verb RunAs -ArgumentList "-Command", "$commandtorun" -Wait
-
-}
