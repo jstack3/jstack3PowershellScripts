@@ -27,7 +27,7 @@ Write-Host 'Sleeping for 30 seconds while Dell Command Update Installs...'
 Start-Sleep -Seconds 30
 
 Write-Host 'Removing Installer...'
-Remove-Item Dell-Command-Update-Windows-Universal-Application_0XNVX_WIN_5.2.0_A00.EXE
+Remove-Item C:\Users\Public\Dell-Command-Update-Windows-Universal-Application_0XNVX_WIN_5.2.0_A00.EXE
 Remove-Item C:\Users\Public\DellCommandInstall -Recurse
 
 Write-Host "Press any key to restart the computer."
