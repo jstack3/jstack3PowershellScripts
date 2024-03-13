@@ -1,6 +1,8 @@
 
  ### Blank Space ####
 
+ $ProgressPreference = 'SilentlyContinue'
+
  $PowershellPrompt = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 
 if (!($PowershellPrompt.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator))) {
