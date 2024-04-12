@@ -17,7 +17,7 @@ Invoke-WebRequest -Uri "https://aka.ms/downloadmee-desktopApp" -OutFile "$env:Mi
 
 Write-Host "Installing Minecraft Education..."
 
-Start-Process cmd.exe -Verb runAs -ArgumentList "/c $env:MinecraftEducationInstall.exe /exenoui /i /qn" -Wait
+Start-Process cmd.exe -Verb runAs -ArgumentList "/c $env:TEMP\MinecraftEducationInstall.exe /exenoui /i /qn" -Wait
 
 Write-Host 'Sleeping for 30 seconds while Minecraft Installs...'
 Start-Sleep -Seconds 30
