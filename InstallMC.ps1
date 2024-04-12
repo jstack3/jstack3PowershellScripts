@@ -13,11 +13,11 @@ if (!($PowershellPrompt.IsInRole([Security.Principal.WindowsBuiltInRole]::Admini
 
 Write-Host "Downloading Minecraft Education Installer..."
 
-Invoke-WebRequest -Uri "https://aka.ms/downloadmee-desktopApp" -OutFile "$env:MinecraftEducationInstall.exe"
+Invoke-WebRequest -Uri "https://aka.ms/downloadmee-desktopApp" -OutFile "$env:TEMP\MinecraftEducationInstall.exe"
 
 Write-Host "Installing Minecraft Education..."
 
-Start-Process cmd.exe -Verb runAs -ArgumentList "/c $env:TEMP\MinecraftEducationInstall.exe /exenoui /i /qn" -Wait
+Start-Process cmd.exe -Verb runAs -ArgumentList "/c %USERPROFILE%\Downloads /exenoui /i /qn" -Wait
 
 Write-Host 'Sleeping for 30 seconds while Minecraft Installs...'
 Start-Sleep -Seconds 30
