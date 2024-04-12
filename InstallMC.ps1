@@ -1,4 +1,5 @@
 ﻿
+
  ### Blank Space ####
 
  $ProgressPreference = 'SilentlyContinue'
@@ -17,7 +18,9 @@ Invoke-WebRequest -Uri "https://aka.ms/downloadmee-desktopApp" -OutFile "$env:US
 
 Write-Host "Installing Minecraft Education..."
 
-Start-Process cmd.exe -Verb runAs -ArgumentList "/c %USERPROFILE%\Downloads\MinecraftEducationInstall.exe /exenoui" -Wait
+Start-Process cmd.exe -Verb runAs -ArgumentList "/c %USERPROFILE%\Downloads\MinecraftEducationInstall.exe /exenoui /qn" -Wait
 
 Write-Host 'Sleeping for 30 seconds while Minecraft Installs...'
 Start-Sleep -Seconds 30
+
+Remove-Item -Force "$env:USERPROFILE\Downloads\MinecraftEducationInstall.exe"
