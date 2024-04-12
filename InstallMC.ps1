@@ -20,7 +20,7 @@ Write-Host "Installing Minecraft Education..."
 
 Start-Process cmd.exe -Verb runAs -ArgumentList "/c %USERPROFILE%\Downloads\MinecraftEducationInstall.exe /exenoui /qn" -Wait
 
-Write-Host 'Sleeping for 30 seconds while Minecraft Installs...'
+Write-Host 'Sleeping for 30 seconds before removing installer...'
 Start-Sleep -Seconds 30
 
 Remove-Item -Force "$env:USERPROFILE\Downloads\MinecraftEducationInstall.exe"
