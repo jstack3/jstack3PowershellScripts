@@ -11,15 +11,17 @@ REM Registry HKLM\SYSTEM\Setup SetupType will revert back to normal, however HKL
 
 
 if "%1"=="" (
-    echo No drive letter selected... Please select your main system drive from the list below:
-    diskpart /s G:\AdminRecovery\listvol.txt
-    if %errorlevel% equ 0 (
-        echo Error running disk vol. To check drive letters run "diskpart", then "list vol".
-    )
+    echo No drive letter selected... To check drive letters run "diskpart", then "list vol".
     echo MAKE SURE DRIVE LETTER INCLUDES ":"
 
 ) else (
     echo You selected Drive: %1
+	dir %1\ > null
+    if %errorlevel% equ 1 (
+       echo Selected drive letter %1 is not valid!!. If the drive is bitlocked use this command to unlock it: "manage-bde -unlock -recoverypassword <Drive Letter>:" . Windows installer/Recovery might also lack support for Dell RAID drivers so you may need to set to AHCI/SATA mode.
+	   exit /B
+
+     )
     reg load HKLM\TEMPSYSHIVE "%1\Windows\System32\config\SYSTEM"
 
     if %errorlevel% equ 0 (
