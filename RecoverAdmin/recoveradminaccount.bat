@@ -68,8 +68,9 @@ if "%1"=="" (
         echo Registry hive unloaded successfully.
         echo Changes made to system to launch cmd on startup! Exit command prompt and restart computer!
         echo ON STARTUP: Use net user commands to change admin password or create local admin account. When you are finished modifying user accounts type "exit" to get back to lock screen.
+        echo "***Please be aware that clicking on your mouse will make the command prompt disappear!***"
     ) else (
-        echo Failed to load registy from provided drive letter! Please make sure you include the colon with no backslash after the drive letter!
+        echo Failed to load registry from provided drive letter! Please make sure you include the colon with no backslash after the drive letter!
         goto end
     )
 
