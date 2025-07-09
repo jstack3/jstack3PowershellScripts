@@ -2,7 +2,7 @@ if [[ "$EUID" -ne 0 ]]; then
 
 	dir=$(pwd)
 
-	xfconf-query --channel xfce4-keyboard-shortcuts --property "/commands/custom/<Supesr>S" --create --type string --set "flameshot gui"
+	xfconf-query --channel xfce4-keyboard-shortcuts --property "/commands/custom/<Super>S" --create --type string --set "flameshot gui"
 
 	xfconf-query --channel xfce4-panel --property "/panels/panel-1/position" --set "p=4;x=0;y=0"
 
