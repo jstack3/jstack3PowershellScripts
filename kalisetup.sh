@@ -10,9 +10,9 @@ if [[ "$EUID" -ne 0 ]]; then
 
 	xfconf-query --channel xfce4-panel --property "/plugins/plugin-19/digital-time-format" --set '%I:%M %p'
 
-	xfconf-query --channel pointers --property "/DELL0A2200_04881024_Touchpad/ReverseScrolling" --set true
+	xfconf-query --channel pointers --property "/DELL0A2200_04881024_Touchpad/ReverseScrolling" --create --type boolean --set true
 	
-	xfconf-query --channel pointers --property "/DELL0A2200_04881024_Touchpad/Properties/libinput_Click_Method_Enabled" -s 0 -s 1
+	xfconf-query --channel pointers --property "/DELL0A2200_04881024_Touchpad/Properties/libinput_Click_Method_Enabled" --create --type array -s 0 -s 1
 	
 	
 	
@@ -35,6 +35,8 @@ else
 	systemctl start bluetooth
 	
 	timedatectl set-ntp true
+	
+	timedatectl set-timezone America/New_York
 
 	apt update
 
