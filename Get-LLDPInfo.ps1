@@ -55,3 +55,9 @@ $AvailableVLANS = $(& $tshark -r $env:TEMP\lldpcapture.pcap -V -Y lldp -T fields
 
 
 Write-Host "Switch Name: --$SwitchNAME-- Port ID: --$PortID-- Native VLAN: --$NativeVLAN-- Native VLAN Name: --$NativeVLAN_Name-- Available VLANS: --$AvailableVLANS--"
+
+Write-Host "Press any key to exit."
+
+Read-Host
+
+exit
