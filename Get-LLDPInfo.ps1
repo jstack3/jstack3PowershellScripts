@@ -54,10 +54,14 @@ $NativeVLAN_Name = $(& $tshark -r $env:TEMP\lldpcapture.pcap -V -Y lldp -T field
 $AvailableVLANS = $(& $tshark -r $env:TEMP\lldpcapture.pcap -V -Y lldp -T fields -e lldp.ieee.802_1.port_vlan.id)
 
 
-Write-Host "Switch Name: --$SwitchNAME-- Port ID: --$PortID-- Native VLAN: --$NativeVLAN-- Native VLAN Name: --$NativeVLAN_Name-- Available VLANS: --$AvailableVLANS--"
+Write-Host "Switch Name: --->$SwitchNAME<--- Port ID: --->$PortID<--- Available VLANS: -->$AvailableVLANS<-- Native VLAN: -->$NativeVLAN<-- Native VLAN Name: --->$NativeVLAN_Name<---"
+
+Write-Host ""
 
 Write-Host "Press any key to exit."
 
 Read-Host
+
+$null = Remove-Item $env:TEMP\lldpcapture.pcap -Force
 
 exit
