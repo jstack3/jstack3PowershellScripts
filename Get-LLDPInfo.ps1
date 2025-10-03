@@ -1,4 +1,19 @@
-﻿$tshark = "C:\Program Files\Wireshark\tshark.exe"
+﻿param(
+    [Parameter(Mandatory=$false)]
+    [string]$FileName
+)
+
+if (!($FileName -eq "")){
+    if (!(Test-Path -Path $FileName -PathType Leaf)) {
+        Write-Host "Specified file does not exist. Press any key to exit." -ForegroundColor Red
+        Read-Host
+        exit
+    }
+}
+
+
+
+$tshark = "C:\Program Files\Wireshark\tshark.exe"
 
 if (!(Test-Path $tshark)){
 
@@ -8,50 +23,73 @@ exit
 
 }
 
+if ($FileName -eq ""){
 
-$interfaces = Get-NetAdapter | Select-Object -ExpandProperty Name
 
-    $selected = 0
-    $key = $null
+    $interfaces = Get-NetAdapter | Select-Object -ExpandProperty Name
 
-        do {
-        Clear-Host
-        if ($title){
-        Write-Host "=== Select an Interface ===`n"
-        }
+        $selected = 0
+        $key = $null
 
-        for ($i = 0; $i -lt $interfaces.Count; $i++) {
-            if ($i -eq $selected) {
-                Write-Host "> $($interfaces[$i])" -ForegroundColor Green
-            } else {
-                Write-Host "  $($interfaces[$i])"
+            do {
+            Clear-Host
+            if ($title){
+            Write-Host "=== Select an Interface ===`n"
             }
-        }
 
-        $key = [Console]::ReadKey($true).Key
+            for ($i = 0; $i -lt $interfaces.Count; $i++) {
+                if ($i -eq $selected) {
+                    Write-Host "> $($interfaces[$i])" -ForegroundColor Green
+                } else {
+                    Write-Host "  $($interfaces[$i])"
+                }
+            }
 
-        switch ($key) {
-            "UpArrow"   { if ($selected -gt 0) { $selected-- } else { $selected = $interfaces.Count - 1 } }
-            "DownArrow" { if ($selected -lt ($interfaces.Count - 1)) { $selected++ } else { $selected = 0 } }
-        }
+            $key = [Console]::ReadKey($true).Key
 
-    } while ($key -ne "Enter")
+            switch ($key) {
+                "UpArrow"   { if ($selected -gt 0) { $selected-- } else { $selected = $interfaces.Count - 1 } }
+                "DownArrow" { if ($selected -lt ($interfaces.Count - 1)) { $selected++ } else { $selected = 0 } }
+            }
 
-
-Write-Host -ForegroundColor Blue "Capturing (this might take a bit)..."
-
-& $tshark -i $interfaces[$selected] -f "ether proto 0x88cc" -c 1 -w $env:TEMP\lldpcapture.pcap > $null 2> $null
+        } while ($key -ne "Enter")
 
 
-$SwitchNAME = $(& $tshark -r $env:TEMP\lldpcapture.pcap -V -Y lldp -T fields -e lldp.tlv.system.name)
+    Write-Host -ForegroundColor Blue "Capturing (this might take a bit)..."
 
-$PortID = $(& $tshark -r $env:TEMP\lldpcapture.pcap -V -Y lldp -T fields -e lldp.port.id)
+    & $tshark -i $interfaces[$selected] -f "ether proto 0x88cc" -c 1 -w $env:TEMP\lldpcapture.pcap > $null 2> $null
 
-$NativeVLAN = $(& $tshark -r $env:TEMP\lldpcapture.pcap -V -Y lldp -T fields -e lldp.ieee.802_1.vlan.id)
+    $pcapFile = "$env:TEMP\lldpcapture.pcap"
 
-$NativeVLAN_Name = $(& $tshark -r $env:TEMP\lldpcapture.pcap -V -Y lldp -T fields -e lldp.ieee.802_1.vlan.name)
+    $SwitchNAME = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.tlv.system.name)
 
-$AvailableVLANS = $(& $tshark -r $env:TEMP\lldpcapture.pcap -V -Y lldp -T fields -e lldp.ieee.802_1.port_vlan.id)
+    $PortID = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.port.id)
+
+    $NativeVLAN = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.ieee.802_1.vlan.id)
+
+    $NativeVLAN_Name = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.ieee.802_1.vlan.name)
+
+    $AvailableVLANS = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.ieee.802_1.port_vlan.id)
+
+}
+else{
+
+    $pcapFile = $FileName
+
+    $SwitchNAME = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.tlv.system.name) | Select-Object -First 1
+
+    $PortID = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.port.id) | Select-Object -First 1
+
+    $NativeVLAN = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.ieee.802_1.vlan.id) | Select-Object -First 1
+
+    $NativeVLAN_Name = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.ieee.802_1.vlan.name) | Select-Object -First 1
+
+    $AvailableVLANS = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.ieee.802_1.port_vlan.id) | Select-Object -First 1
+
+}
+
+
+
 
 
 Write-Host "Switch Name: --->$SwitchNAME<--- Port ID: --->$PortID<--- Available VLANS: -->$AvailableVLANS<-- Native VLAN: -->$NativeVLAN<-- Native VLAN Name: --->$NativeVLAN_Name<---"
@@ -62,6 +100,6 @@ Write-Host "Press any key to exit."
 
 Read-Host
 
-$null = Remove-Item $env:TEMP\lldpcapture.pcap -Force
+Remove-Item $env:TEMP\lldpcapture.pcap -Force > $null 2> $null
 
 exit
