@@ -92,7 +92,15 @@ else{
 
 
 
-Write-Host "Switch Name: --->$SwitchNAME<--- Port ID: --->$PortID<--- Available VLANS: -->$AvailableVLANS<-- Native VLAN: -->$NativeVLAN<-- Native VLAN Name: --->$NativeVLAN_Name<---"
+Write-Host "Switch Name: $SwitchNAME" 
+
+Write-Host "Port ID: $PortID"
+
+Write-Host "Available VLANS: $AvailableVLANS"
+
+Write-Host "Native VLAN: $NativeVLAN" 
+
+Write-Host "Native VLAN Name: $NativeVLAN_Name"
 
 Write-Host ""
 
