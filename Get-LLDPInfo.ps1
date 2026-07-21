@@ -60,6 +60,10 @@ if ($FileName -eq ""){
     & $tshark -i $interfaces[$selected] -f "ether proto 0x88cc" -c 1 -w $env:TEMP\lldpcapture.pcap > $null 2> $null
 
     $pcapFile = "$env:TEMP\lldpcapture.pcap"
+	
+	$ClientMAC =  $(Get-NetAdapter -InterfaceAlias $interfaces[$selected] | Select-Object -ExpandProperty MacAddress).Replace("-",":")
+	
+	$switchMAC = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.chassis.id.mac)
 
     $SwitchNAME = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.tlv.system.name)
 
@@ -75,6 +79,10 @@ if ($FileName -eq ""){
 else{
 
     $pcapFile = $FileName
+	
+	$ClientMAC =  $(Get-NetAdapter -InterfaceAlias $interfaces[$selected] | Select-Object -ExpandProperty MacAddress).Replace("-",":")
+	
+	$switchMAC = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.chassis.id.mac)
 
     $SwitchNAME = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.tlv.system.name) | Select-Object -First 1
 
@@ -91,6 +99,9 @@ else{
 
 
 
+Write-Host "Client MAC Address: $ClientMAC"
+
+Write-Host "Switch MAC Address: $switchMAC"
 
 Write-Host "Switch Name: $SwitchNAME" 
 
