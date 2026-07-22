@@ -14,7 +14,7 @@ if (!($PowershellPrompt.IsInRole([Security.Principal.WindowsBuiltInRole]::Admini
 
 Write-Host "Downloading Minecraft Education Installer..."
 
-Invoke-WebRequest -Uri "https://aka.ms/downloadmee-desktopApp" -OutFile "$env:USERPROFILE\Downloads\MinecraftEducationInstall.exe"
+Invoke-WebRequest -Uri "https://aka.ms/downloadmee-desktopApp" -OutFile "$env:TEMP\MinecraftEducationInstall.exe"
 
 Write-Host "Installing Minecraft Education..."
 
@@ -23,4 +23,4 @@ Start-Process cmd.exe -Verb runAs -ArgumentList "/c %USERPROFILE%\Downloads\Mine
 Write-Host 'Sleeping for 30 seconds before removing installer...'
 Start-Sleep -Seconds 30
 
-Remove-Item -Force "$env:USERPROFILE\Downloads\MinecraftEducationInstall.exe"
+Remove-Item -Force "$env:TEMP\MinecraftEducationInstall.exe"
