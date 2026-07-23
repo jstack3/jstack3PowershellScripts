@@ -90,9 +90,9 @@ else {
 
 if ($lldpONLY -or (!$lldpONLY -and !$cdpONLY)) {
 
-    Write-Host -ForegroundColor Blue "Capturing LLDP Packets. This will stop after 60 seconds if no matching packets are found. Please wait... "
-
     if ($FileName -eq "") {
+
+        Write-Host -ForegroundColor Blue "Capturing LLDP Packets. This will stop after 60 seconds if no matching packets are found. Please wait... "
     
         & $tshark -i $interface -f "ether proto 0x88cc" -c 1 -a "duration:60" -w $env:TEMP\LLDPcapture.pcap > $null 2> $null
 
@@ -123,9 +123,9 @@ if ($lldpONLY -or (!$lldpONLY -and !$cdpONLY)) {
 
 if ($cdpONLY -or (!$lldpONLY -and !$cdpONLY)) {
 
-    Write-Host -ForegroundColor Blue "Capturing CDP Packets. This will stop after 60 seconds if no matching packets are found. Please wait... "
-
     if ($FileName -eq "") {
+
+        Write-Host -ForegroundColor Blue "Capturing CDP Packets. This will stop after 60 seconds if no matching packets are found. Please wait... "
     
         & $tshark -i $interface -f "ether dst 01:00:0c:cc:cc:cc" -c 1 -a "duration:60" -w $env:TEMP\CDPcapture.pcap > $null 2> $null
 
