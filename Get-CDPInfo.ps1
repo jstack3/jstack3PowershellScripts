@@ -57,42 +57,30 @@ if ($FileName -eq ""){
 
     Write-Host -ForegroundColor Blue "Capturing (this might take a bit)..."
 
-    & $tshark -i $interfaces[$selected] -f "ether proto 0x88cc" -c 1 -w $env:TEMP\lldpcapture.pcap > $null 2> $null
+    & $tshark -i $interfaces[$selected] -f "ether dst 01:00:0c:cc:cc:cc" -c 1 -w $env:TEMP\cdpcapture.pcap > $null 2> $null
 
-    $pcapFile = "$env:TEMP\lldpcapture.pcap"
+    $PcapFile = "$env:TEMP\cdpcapture.pcap"
 	
 	$ClientMAC =  $(Get-NetAdapter -InterfaceAlias $interfaces[$selected] | Select-Object -ExpandProperty MacAddress).Replace("-",":")
-	
-	$switchMAC = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.chassis.id.mac).ToUpper()
 
-    $SwitchNAME = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.tlv.system.name)
+    $SwitchNAME = $(& $tshark -r $pcapFile -V -Y cdp -T fields -e cdp.deviceid)
 
-    $PortID = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.port.id)
+    $PortID = $(& $tshark -r $pcapFile -V -Y cdp -T fields -e cdp.portid)
 
-    $NativeVLAN = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.ieee.802_1.vlan.id)
-
-    $NativeVLAN_Name = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.ieee.802_1.vlan.name)
-
-    $AvailableVLANS = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.ieee.802_1.port_vlan.id)
+    $NativeVLAN = $(& $tshark -r $pcapFile -V -Y cdp -T fields -e cdp.native_vlan)
 
 }
 else{
 
-    $pcapFile = $FileName
+    $PcapFile = $FileName
 	
 	$ClientMAC =  "Unable to get current MAC since this is reading from a previous packet capture."
-	
-	$switchMAC = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.chassis.id.mac).ToUpper()
 
-    $SwitchNAME = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.tlv.system.name) | Select-Object -First 1
+    $SwitchNAME = $(& $tshark -r $pcapFile -V -Y cdp -T fields -e cdp.deviceid)
 
-    $PortID = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.port.id) | Select-Object -First 1
+    $PortID = $(& $tshark -r $pcapFile -V -Y cdp -T fields -e cdp.portid)
 
-    $NativeVLAN = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.ieee.802_1.vlan.id) | Select-Object -First 1
-
-    $NativeVLAN_Name = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.ieee.802_1.vlan.name) | Select-Object -First 1
-
-    $AvailableVLANS = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.ieee.802_1.port_vlan.id) | Select-Object -First 1
+    $NativeVLAN = $(& $tshark -r $pcapFile -V -Y cdp -T fields -e cdp.native_vlan)
 
 }
 
@@ -101,17 +89,11 @@ else{
 
 Write-Host "Client MAC Address: $ClientMAC"
 
-Write-Host "Switch MAC Address: $switchMAC"
-
 Write-Host "Switch Name: $SwitchNAME" 
 
 Write-Host "Port ID: $PortID"
 
-Write-Host "Available VLANS: $AvailableVLANS"
-
 Write-Host "Native VLAN: $NativeVLAN" 
-
-Write-Host "Native VLAN Name: $NativeVLAN_Name"
 
 Write-Host ""
 
@@ -119,6 +101,6 @@ Write-Host "Press any key to exit."
 
 Read-Host
 
-Remove-Item $env:TEMP\lldpcapture.pcap -Force > $null 2> $null
+Remove-Item $env:TEMP\cdpcapture.pcap -Force > $null 2> $null
 
 exit
