@@ -63,7 +63,7 @@ if ($FileName -eq ""){
 	
 	$ClientMAC =  $(Get-NetAdapter -InterfaceAlias $interfaces[$selected] | Select-Object -ExpandProperty MacAddress).Replace("-",":")
 	
-	$switchMAC = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.chassis.id.mac)
+	$switchMAC = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.chassis.id.mac).ToUpper()
 
     $SwitchNAME = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.tlv.system.name)
 
@@ -82,7 +82,7 @@ else{
 	
 	$ClientMAC =  $(Get-NetAdapter -InterfaceAlias $interfaces[$selected] | Select-Object -ExpandProperty MacAddress).Replace("-",":")
 	
-	$switchMAC = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.chassis.id.mac)
+	$switchMAC = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.chassis.id.mac).ToUpper()
 
     $SwitchNAME = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.tlv.system.name) | Select-Object -First 1
 
