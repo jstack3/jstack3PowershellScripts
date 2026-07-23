@@ -1,6 +1,7 @@
 ﻿param(
     [Parameter(Mandatory=$false)]
-    [string]$FileName
+    [string]$FileName,
+    [string]$Interface
 )
 
 if (!($FileName -eq "")){
@@ -26,42 +27,46 @@ exit
 if ($FileName -eq ""){
 
 
-    $interfaces = Get-NetAdapter | Select-Object -ExpandProperty Name
+    if ($Interface -eq "" -or $Interface -eq $null){
 
-        $selected = 0
-        $key = $null
+        $interfaces = Get-NetAdapter | Select-Object -ExpandProperty Name
 
-            do {
-            Clear-Host
-            if ($title){
-            Write-Host "=== Select an Interface ===`n"
-            }
+            $selected = 0
+            $key = $null
 
-            for ($i = 0; $i -lt $interfaces.Count; $i++) {
-                if ($i -eq $selected) {
-                    Write-Host "> $($interfaces[$i])" -ForegroundColor Green
-                } else {
-                    Write-Host "  $($interfaces[$i])"
+                do {
+                Clear-Host
+                Write-Host "=== Select an Interface ===`n"
+
+                for ($i = 0; $i -lt $interfaces.Count; $i++) {
+                    if ($i -eq $selected) {
+                        Write-Host "> $($interfaces[$i])" -ForegroundColor Green
+                    } else {
+                        Write-Host "  $($interfaces[$i])"
+                    }
                 }
+
+                $key = [Console]::ReadKey($true).Key
+
+                switch ($key) {
+                    "UpArrow"   { if ($selected -gt 0) { $selected-- } else { $selected = $interfaces.Count - 1 } }
+                    "DownArrow" { if ($selected -lt ($interfaces.Count - 1)) { $selected++ } else { $selected = 0 } }
+                }
+
+            } while ($key -ne "Enter")
+
+            $interface = $interfaces[$selected]
+
             }
-
-            $key = [Console]::ReadKey($true).Key
-
-            switch ($key) {
-                "UpArrow"   { if ($selected -gt 0) { $selected-- } else { $selected = $interfaces.Count - 1 } }
-                "DownArrow" { if ($selected -lt ($interfaces.Count - 1)) { $selected++ } else { $selected = 0 } }
-            }
-
-        } while ($key -ne "Enter")
 
 
     Write-Host -ForegroundColor Blue "Capturing (this might take a bit)..."
 
-    & $tshark -i $interfaces[$selected] -f "ether proto 0x88cc" -c 1 -w $env:TEMP\lldpcapture.pcap > $null 2> $null
+    & $tshark -i $interface -f "ether proto 0x88cc" -c 1 -w $env:TEMP\lldpcapture.pcap > $null 2> $null
 
     $pcapFile = "$env:TEMP\lldpcapture.pcap"
 	
-	$ClientMAC =  $(Get-NetAdapter -InterfaceAlias $interfaces[$selected] | Select-Object -ExpandProperty MacAddress).Replace("-",":")
+	$ClientMAC =  $(Get-NetAdapter -InterfaceAlias $interface | Select-Object -ExpandProperty MacAddress).Replace("-",":")
 	
 	$switchMAC = $(& $tshark -r $pcapFile -V -Y lldp -T fields -e lldp.chassis.id.mac).ToUpper()
 
